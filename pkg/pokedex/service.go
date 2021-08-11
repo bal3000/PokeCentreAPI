@@ -1,6 +1,10 @@
 package pokedex
 
-import "context"
+import (
+	"context"
+
+	"github.com/bal3000/PokeCentreAPI/pkg/database"
+)
 
 type Service interface {
 	GetAllPokemon(ctx context.Context, size int, page int) ([]Pokemon, error)
@@ -10,25 +14,32 @@ type Service interface {
 }
 
 type service struct {
-	// db goes here
+	db database.PokemonDB
 }
 
-func NewService() Service {
-	return service{}
+func NewService(db database.PokemonDB) Service {
+	return &service{db}
 }
 
-func (s service) GetAllPokemon(ctx context.Context, size int, page int) ([]Pokemon, error) {
+func (s *service) GetAllPokemon(ctx context.Context, size int, page int) ([]Pokemon, error) {
 	return []Pokemon{}, nil
 }
 
-func (s service) FindPokemon(ctx context.Context, name string, pokemonType string) ([]Pokemon, error) {
+func (s *service) FindPokemon(ctx context.Context, name string, pokemonType string) ([]Pokemon, error) {
 	return []Pokemon{}, nil
 }
 
-func (s service) GetPokemon(ctx context.Context, id int) (Pokemon, error) {
-	return Pokemon{}, nil
+func (s *service) GetPokemon(ctx context.Context, id int) (Pokemon, error) {
+	p, err := s.db.GetPokemon(ctx, id)
+	if err != nil {
+		return Pokemon{}, err
+	}
+
+	return Pokemon{
+		Name: p.Name,
+	}, nil
 }
 
-func (s service) ListMoves(ctx context.Context, id int) ([]string, error) {
+func (s *service) ListMoves(ctx context.Context, id int) ([]string, error) {
 	return []string{}, nil
 }
