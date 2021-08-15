@@ -4,15 +4,18 @@ import (
 	"context"
 
 	"github.com/bal3000/PokeCentreAPI/pkg/database"
+	"github.com/bal3000/PokeCentreAPI/pkg/logger"
+
 	"github.com/jackc/pgx"
 	"go.uber.org/multierr"
 )
 
 type PokemonPGDB struct {
 	conn *pgx.Conn
+	log  logger.Logger
 }
 
-func NewPokemonPGDB(host, database, username, password string, port int) (database.PokemonDB, func() (err error), error) {
+func NewPokemonPGDB(host, database, username, password string, port int, logger logger.Logger) (database.PokemonDB, func() (err error), error) {
 	config := pgx.ConnConfig{
 		Host:     host,
 		Port:     uint16(port),
@@ -25,7 +28,7 @@ func NewPokemonPGDB(host, database, username, password string, port int) (databa
 		return nil, nil, err
 	}
 
-	return PokemonPGDB{conn}, func() (err error) {
+	return PokemonPGDB{conn, logger}, func() (err error) {
 		err = multierr.Append(err, conn.Close())
 		return err
 	}, err
