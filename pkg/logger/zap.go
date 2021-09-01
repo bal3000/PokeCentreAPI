@@ -17,9 +17,6 @@ var encoderCfg = zapcore.EncoderConfig{
 
 	CallerKey:    "caller",
 	EncodeCaller: zapcore.ShortCallerEncoder,
-
-	// TimeKey:    "time",
-	// EncodeTime: zapcore.ISO8601TimeEncoder,
 }
 
 type ZapLogger struct {

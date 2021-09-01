@@ -28,16 +28,20 @@ func NewPokemonPGDB(host, database, username, password string, port int, logger 
 		return nil, nil, err
 	}
 
-	return PokemonPGDB{conn, logger}, func() (err error) {
+	return &PokemonPGDB{conn, logger}, func() (err error) {
 		err = multierr.Append(err, conn.Close())
 		return err
 	}, err
 }
 
-func (p PokemonPGDB) SavePokemon(ctx context.Context, pokemon database.PokemonModel) error {
+func (p *PokemonPGDB) GetAllPokemon(ctx context.Context, size, page int) ([]database.PokemonModel, error) {
+	return []database.PokemonModel{}, nil
+}
+
+func (p *PokemonPGDB) SavePokemon(ctx context.Context, pokemon database.PokemonModel) error {
 	return nil
 }
 
-func (p PokemonPGDB) GetPokemon(ctx context.Context, id int) (database.PokemonModel, error) {
+func (p *PokemonPGDB) GetPokemon(ctx context.Context, id int) (database.PokemonModel, error) {
 	return database.PokemonModel{}, nil
 }

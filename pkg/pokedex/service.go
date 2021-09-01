@@ -22,7 +22,19 @@ func NewService(db database.PokemonDB) Service {
 }
 
 func (s *service) GetAllPokemon(ctx context.Context, size int, page int) ([]Pokemon, error) {
-	return []Pokemon{}, nil
+	pokemon, err := s.db.GetAllPokemon(ctx, 10, 1)
+	if err != nil {
+		return nil, err
+	}
+
+	var pmons []Pokemon
+	for _, p := range pokemon {
+		pmons = append(pmons, Pokemon{
+			Name: p.Name,
+		})
+	}
+
+	return pmons, nil
 }
 
 func (s *service) FindPokemon(ctx context.Context, name string, pokemonType string) ([]Pokemon, error) {

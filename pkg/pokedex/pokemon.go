@@ -1,5 +1,8 @@
 package pokedex
 
 type Pokemon struct {
-	Name string `json:"name"`
+	ID          int      `json:"id"`
+	Name        string   `json:"name"`
+	Types       []string `json:"types"`
+	EvolvesInto int      `json:"evolvesInto"`
 }
